@@ -6,7 +6,7 @@ import type { TextInputOTPProps, TextInputOTPRef } from '../types';
 export const TextInput = forwardRef<
   TextInputOTPRef,
   Omit<TextInputOTPProps, 'children'>
->((props, ref) => {
+>(({ autoFocus = true, ...rest }, ref) => {
   const {
     inputRef,
     handleKeyPress,
@@ -32,7 +32,8 @@ export const TextInput = forwardRef<
       onChangeText={handleChangeText}
       style={styles.input}
       keyboardType="number-pad"
-      {...props}
+      autoFocus={autoFocus}
+      {...rest}
     />
   );
 });

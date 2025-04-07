@@ -27,12 +27,15 @@ const TextInputOTPContext = createContext<TextInputOTPContextProps>({
 });
 
 export function TextInputOTPProvider({
+  autoFocus = true,
   maxLength,
   onFilled,
   children,
-}: PropsWithChildren<Pick<TextInputOTPProps, 'maxLength' | 'onFilled'>>) {
+}: PropsWithChildren<
+  Pick<TextInputOTPProps, 'autoFocus' | 'maxLength' | 'onFilled'>
+>) {
   const [code, setCode] = useState(Array(maxLength).fill(''));
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(autoFocus ? 0 : -1);
   const inputRef = useRef<TextInput>(null);
 
   function updateCodeAtIndex(index: number, value: string) {

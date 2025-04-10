@@ -49,7 +49,23 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "otp",
+    "expo",
+    "verification-code",
+    "sms-code",
+    "one-time-password",
+    "react-native-otp",
+    "otp-input",
+    "react-native-otp-input",
+    "react-native-input-code-otp",
+    "johelder",
+    "react",
+    "react-native-input-otp",
+    "react-native-otp-entry",
+    "react-native-otp-verify",
+    "react-native-component",
+    "react-native-app"
   ],
   "repository": {
     "type": "git",

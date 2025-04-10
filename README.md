@@ -1,6 +1,8 @@
 # react-native-input-code-otp
 
-react-native-input-code-otp is a high-performance, fully customizable OTP input component for React Native. Built with TypeScript, it ensures smooth rendering and seamless user interactions.
+react-native-input-code-otp is a high-performance and fully customizable OTP input component for React Native, inspired @shadcn/ui.
+
+![Presentation Video](./.github/assets/react-native-input-code-otp.gif)
 
 ## Installation
 

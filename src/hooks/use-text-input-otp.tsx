@@ -1,6 +1,8 @@
 import {
   createContext,
+  useCallback,
   useContext,
+  useMemo,
   useRef,
   useState,
   type PropsWithChildren,
@@ -38,61 +40,71 @@ export function TextInputOTPProvider({
   const [currentIndex, setCurrentIndex] = useState(autoFocus ? 0 : -1);
   const inputRef = useRef<TextInput>(null);
 
-  function updateCodeAtIndex(index: number, value: string) {
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
+  const updateCodeAtIndex = useCallback(
+    (index: number, value: string) => {
+      const newCode = [...code];
+      newCode[index] = value;
+      setCode(newCode);
 
-    return newCode;
-  }
+      return newCode;
+    },
+    [code]
+  );
 
-  function handleKeyPress(
-    event: NativeSyntheticEvent<TextInputKeyPressEventData>
-  ) {
-    const { key } = event.nativeEvent;
+  const handleKeyPress = useCallback(
+    (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+      const { key } = event.nativeEvent;
 
-    if (key !== BACKSPACE_KEY) {
-      return;
-    }
+      if (key !== BACKSPACE_KEY) {
+        return;
+      }
 
-    if (!code[currentIndex] && currentIndex > 0) {
-      updateCodeAtIndex(currentIndex - 1, '');
-      setCurrentIndex((prev) => prev - 1);
-      return;
-    }
+      if (!code[currentIndex] && currentIndex > 0) {
+        updateCodeAtIndex(currentIndex - 1, '');
+        setCurrentIndex((prev) => prev - 1);
+        return;
+      }
 
-    updateCodeAtIndex(currentIndex, '');
-  }
+      updateCodeAtIndex(currentIndex, '');
+    },
+    [code, currentIndex, updateCodeAtIndex]
+  );
 
-  function handleChangeText(text: string) {
-    if (text.length > 1) {
-      return;
-    }
+  const handleChangeText = useCallback(
+    (text: string) => {
+      if (text.length > 1) {
+        return;
+      }
 
-    const updatedCode = updateCodeAtIndex(currentIndex, text);
+      const updatedCode = updateCodeAtIndex(currentIndex, text);
 
-    if (currentIndex < maxLength - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      return;
-    }
+      if (currentIndex < maxLength - 1) {
+        setCurrentIndex((prev) => prev + 1);
+        return;
+      }
 
-    const finalCode = [...updatedCode].join('');
+      const finalCode = [...updatedCode].join('');
 
-    if (finalCode.length === maxLength) {
-      onFilled?.(finalCode);
-    }
-  }
+      if (finalCode.length === maxLength) {
+        onFilled?.(finalCode);
+      }
+    },
+    [currentIndex, maxLength, onFilled, updateCodeAtIndex]
+  );
 
   function handlePress(index: number) {
     setCurrentIndex(index);
     inputRef.current?.focus();
   }
 
-  function setValue(text: string) {
-    const value = text.length > maxLength ? text.slice(0, maxLength) : text;
-    setCode(Array.from(value));
-    setCurrentIndex(maxLength - 1);
-  }
+  const setValue = useCallback(
+    (text: string) => {
+      const value = text.length > maxLength ? text.slice(0, maxLength) : text;
+      setCode(Array.from(value));
+      setCurrentIndex(maxLength - 1);
+    },
+    [maxLength]
+  );
 
   function focus() {
     inputRef.current?.focus();
@@ -102,26 +114,29 @@ export function TextInputOTPProvider({
     inputRef.current?.blur();
   }
 
-  function clear() {
+  const clear = useCallback(() => {
     setCode(Array(maxLength).fill(''));
     setCurrentIndex(0);
-  }
+  }, [maxLength]);
+
+  const contextValue = useMemo(
+    () => ({
+      code,
+      currentIndex,
+      inputRef,
+      handleKeyPress,
+      handleChangeText,
+      handlePress,
+      setValue,
+      focus,
+      blur,
+      clear,
+    }),
+    [clear, code, currentIndex, handleChangeText, handleKeyPress, setValue]
+  );
 
   return (
-    <TextInputOTPContext.Provider
-      value={{
-        code,
-        currentIndex,
-        inputRef,
-        handleKeyPress,
-        handleChangeText,
-        handlePress,
-        setValue,
-        focus,
-        blur,
-        clear,
-      }}
-    >
+    <TextInputOTPContext.Provider value={contextValue}>
       {children}
     </TextInputOTPContext.Provider>
   );

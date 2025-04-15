@@ -1,37 +1,27 @@
-import { StyleSheet, Animated, useAnimatedValue } from 'react-native';
-import { useThemeColor } from '../theme/use-theme-color';
-import { theme } from '../theme/theme';
 import { useEffect } from 'react';
+import { StyleSheet, Animated, useAnimatedValue } from 'react-native';
 
 export function AnimatedCaret() {
-  const backgroundColor = useThemeColor({
-    light: theme.colorBlack,
-    dark: theme.colorWhite,
-  });
-  const opacityValue = useAnimatedValue(0);
+  const opacity = useAnimatedValue(0);
 
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
-        Animated.timing(opacityValue, {
+        Animated.timing(opacity, {
           toValue: 0,
           duration: 500,
           useNativeDriver: true,
         }),
-        Animated.timing(opacityValue, {
+        Animated.timing(opacity, {
           toValue: 1,
           duration: 500,
           useNativeDriver: true,
         }),
       ])
     ).start();
-  }, [opacityValue]);
+  }, [opacity]);
 
-  return (
-    <Animated.View
-      style={[styles.caret, { backgroundColor, opacity: opacityValue }]}
-    />
-  );
+  return <Animated.View style={[styles.caret, { opacity }]} />;
 }
 
 const styles = StyleSheet.create({
@@ -39,5 +29,6 @@ const styles = StyleSheet.create({
     width: 2,
     height: 16,
     borderRadius: 16,
+    backgroundColor: '#030712',
   },
 });

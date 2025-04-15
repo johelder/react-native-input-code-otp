@@ -1,5 +1,3 @@
-import { theme } from '../theme/theme';
-import { useThemeColor } from '../theme/use-theme-color';
 import type { UseSlotBorderStylesProps } from '../types/text-input-otp-slot';
 
 export function useSlotBorderStyles({
@@ -7,18 +5,9 @@ export function useSlotBorderStyles({
   isFirst,
   isLast,
 }: UseSlotBorderStylesProps) {
-  const blurredBorderColor = useThemeColor({
-    light: theme.colorLightGrey,
-    dark: theme.colorDarkGrey,
-  });
-  const focusedBorderColor = useThemeColor({
-    light: theme.colorBlack,
-    dark: theme.colorWhite,
-  });
-
   return {
     height: isFocused ? 54 : 50,
-    borderColor: isFocused ? focusedBorderColor : blurredBorderColor,
+    borderColor: isFocused ? '#030712' : '#E4E7EC',
     borderTopWidth: 2,
     borderBottomWidth: 2,
     borderLeftWidth: isFocused || isFirst ? 2 : 1,

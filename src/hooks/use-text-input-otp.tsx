@@ -7,19 +7,13 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
-import type {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputKeyPressEventData,
-} from 'react-native';
-import { BACKSPACE_KEY } from '../constants';
+import type { TextInput } from 'react-native';
 import type { TextInputOTPContextProps, TextInputOTPProps } from '../types';
 
 const TextInputOTPContext = createContext<TextInputOTPContextProps>({
-  code: [],
+  code: '',
   currentIndex: 0,
   inputRef: { current: null },
-  handleKeyPress: () => {},
   handleChangeText: () => {},
   handlePress: () => {},
   setValue: () => {},
@@ -31,76 +25,50 @@ const TextInputOTPContext = createContext<TextInputOTPContextProps>({
 export function TextInputOTPProvider({
   autoFocus = true,
   maxLength,
+  value = '',
   onFilled,
+  onChangeText,
   children,
 }: PropsWithChildren<
-  Pick<TextInputOTPProps, 'autoFocus' | 'maxLength' | 'onFilled'>
+  Pick<
+    TextInputOTPProps,
+    'autoFocus' | 'maxLength' | 'onFilled' | 'onChangeText' | 'value'
+  >
 >) {
-  const [code, setCode] = useState(Array(maxLength).fill(''));
-  const [currentIndex, setCurrentIndex] = useState(autoFocus ? 0 : -1);
+  const [code, setCode] = useState(value);
+  const [currentIndex, setCurrentIndex] = useState(() => (autoFocus ? 0 : -1));
   const inputRef = useRef<TextInput>(null);
-
-  const updateCodeAtIndex = useCallback(
-    (index: number, value: string) => {
-      const newCode = [...code];
-      newCode[index] = value;
-      setCode(newCode);
-
-      return newCode;
-    },
-    [code]
-  );
-
-  const handleKeyPress = useCallback(
-    (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-      const { key } = event.nativeEvent;
-
-      if (key !== BACKSPACE_KEY) {
-        return;
-      }
-
-      if (!code[currentIndex] && currentIndex > 0) {
-        updateCodeAtIndex(currentIndex - 1, '');
-        setCurrentIndex((prev) => prev - 1);
-        return;
-      }
-
-      updateCodeAtIndex(currentIndex, '');
-    },
-    [code, currentIndex, updateCodeAtIndex]
-  );
 
   const handleChangeText = useCallback(
     (text: string) => {
-      if (text.length > 1) {
+      if (text.length > maxLength) {
         return;
       }
 
-      const updatedCode = updateCodeAtIndex(currentIndex, text);
+      setCode(text);
+      onChangeText?.(text);
 
-      if (currentIndex < maxLength - 1) {
-        setCurrentIndex((prev) => prev + 1);
-        return;
+      if (text.length === maxLength) {
+        onFilled?.(text);
       }
 
-      const finalCode = [...updatedCode].join('');
-
-      if (finalCode.length === maxLength) {
-        onFilled?.(finalCode);
+      if (text.length < maxLength) {
+        setCurrentIndex(text.length);
       }
     },
-    [currentIndex, maxLength, onFilled, updateCodeAtIndex]
+    [maxLength, onChangeText, onFilled]
   );
 
-  function handlePress(index: number) {
-    setCurrentIndex(index);
+  const handlePress = useCallback(() => {
+    setCurrentIndex(code.length);
     inputRef.current?.focus();
-  }
+  }, [code.length]);
 
   const setValue = useCallback(
     (text: string) => {
-      const value = text.length > maxLength ? text.slice(0, maxLength) : text;
-      setCode(Array.from(value));
+      const filledCode =
+        text.length > maxLength ? text.slice(0, maxLength) : text;
+      setCode(filledCode);
       setCurrentIndex(maxLength - 1);
     },
     [maxLength]
@@ -115,16 +83,15 @@ export function TextInputOTPProvider({
   }
 
   const clear = useCallback(() => {
-    setCode(Array(maxLength).fill(''));
+    setCode('');
     setCurrentIndex(0);
-  }, [maxLength]);
+  }, []);
 
   const contextValue = useMemo(
     () => ({
-      code,
+      code: value || code,
       currentIndex,
       inputRef,
-      handleKeyPress,
       handleChangeText,
       handlePress,
       setValue,
@@ -132,7 +99,7 @@ export function TextInputOTPProvider({
       blur,
       clear,
     }),
-    [clear, code, currentIndex, handleChangeText, handleKeyPress, setValue]
+    [clear, code, currentIndex, handleChangeText, handlePress, setValue, value]
   );
 
   return (

@@ -1,4 +1,4 @@
-import type { UseSlotBorderStylesProps } from '../types/text-input-otp-slot';
+import type { UseSlotBorderStylesProps } from '../types';
 
 export function useSlotBorderStyles({
   isFocused,

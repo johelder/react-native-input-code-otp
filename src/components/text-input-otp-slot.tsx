@@ -25,12 +25,12 @@ function TextInputOTPSlotComponent({
 
   return (
     <Pressable
+      onPress={handlePress}
       style={StyleSheet.flatten([
         styles.slot,
         borderStyles,
         isFocused ? focusedSlotStyles : slotStyles,
       ])}
-      onPress={() => handlePress(index)}
       {...rest}
     >
       {code[index] && (

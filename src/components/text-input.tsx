@@ -7,15 +7,8 @@ export const TextInput = forwardRef<
   TextInputOTPRef,
   Omit<TextInputOTPProps, 'children'>
 >(({ autoFocus = true, ...rest }, ref) => {
-  const {
-    inputRef,
-    handleKeyPress,
-    handleChangeText,
-    setValue,
-    focus,
-    blur,
-    clear,
-  } = useTextInputOTP();
+  const { inputRef, handleChangeText, setValue, focus, blur, clear } =
+    useTextInputOTP();
 
   useImperativeHandle(ref, () => ({
     setValue,
@@ -26,14 +19,12 @@ export const TextInput = forwardRef<
 
   return (
     <RNTextInput
-      value=""
       ref={inputRef}
-      onKeyPress={handleKeyPress}
-      onChangeText={handleChangeText}
-      style={styles.input}
       keyboardType="number-pad"
       autoFocus={autoFocus}
+      style={styles.input}
       {...rest}
+      onChangeText={handleChangeText}
     />
   );
 });

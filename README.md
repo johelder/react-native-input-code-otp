@@ -150,6 +150,7 @@ import {
   TextInputOTPSlot,
   TextInputOTPGroup,
   TextInputOTPSeparator,
+  type TextInputOTPRef,
 } from 'react-native-input-code-otp';
 
 export function MyComponent() {

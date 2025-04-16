@@ -12,7 +12,7 @@ npm install react-native-input-code-otp
 
 ## Usage
 
-```ts
+```tsx
 import {
   TextInputOTP,
   TextInputOTPSlot,
@@ -35,7 +35,7 @@ export function MyComponent() {
         <TextInputOTPSlot index={5} />
       </TextInputOTPGroup>
     </TextInputOTP>
-  )
+  );
 }
 ```
 
@@ -46,9 +46,13 @@ export function MyComponent() {
 | `maxLength`  | number - Required                 | The max number of digits to OTP code.                                                                                          |
 | `onFilled`   | (code: string) => void - Optional | The callback function is executed when the OTP input has been entirely completed, and it receives the OTP code as a parameter. |
 
+---
+
 | TextInputOTPGroup | Type                 | Description                   |
 | ----------------- | -------------------- | ----------------------------- |
 | `groupStyles`     | ViewStyle - Optional | Custom styles for the `View`. |
+
+---
 
 | TextInputOTPSlot        | Type                 | Description                                                                                                 |
 | ----------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------- |
@@ -58,6 +62,8 @@ export function MyComponent() {
 | `slotTextStyles`        | TextStyle - Optional | Custom styles for the `Text`.                                                                               |
 | `focusedSlotTextStyles` | TextStyle - Optional | Custom styles applied to the slot `Text` when it is focused.                                                |
 
+---
+
 | TextInputOTPSeparator | Type                 | Description                   |
 | --------------------- | -------------------- | ----------------------------- |
 | `separatorStyles`     | ViewStyle - Optional | Custom styles for the `View`. |
@@ -66,12 +72,116 @@ export function MyComponent() {
 
 The `TextInputOTP` component exposes these functions with `ref`:
 
-| Prop       | Type                     | Description                                                                |
-| ---------- | ------------------------ | -------------------------------------------------------------------------- |
-| `clear`    | () => void;              | Resets the OTP input by clearing all entered values.                       |
-| `focus`    | () => void;              | Activates the OTP input field, allowing the user to type.                  |
-| `blue`     | () => void;              | Deactivates the OTP input field, removing focus.                           |
-| `setValue` | (value: string) => void; | Sets a custom value to the OTP input fields, overriding any current input. |
+| Prop       | Type                    | Description                                                                |
+| ---------- | ----------------------- | -------------------------------------------------------------------------- |
+| `clear`    | () => void              | Resets the OTP input by clearing all entered values.                       |
+| `focus`    | () => void              | Activates the OTP input field, allowing the user to type.                  |
+| `blue`     | () => void              | Deactivates the OTP input field, removing focus.                           |
+| `setValue` | (value: string) => void | Sets a custom value to the OTP input fields, overriding any current input. |
+
+## Examples
+
+<details>
+<summary>Usage with react-hook-form</summary>
+
+```tsx
+import { Button, View } from 'react-native';
+import {
+  TextInputOTP,
+  TextInputOTPSlot,
+  TextInputOTPGroup,
+  TextInputOTPSeparator,
+} from 'react-native-input-code-otp';
+import { Controller, useForm } from 'react-hook-form';
+
+type FormValues = {
+  code: string;
+};
+
+export function MyComponent() {
+  const { control, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      code: '',
+    },
+  });
+
+  function onSubmit({ code }: FormValues) {
+    console.log({ code });
+  }
+
+  return (
+    <View>
+      <Controller
+        name="code"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <TextInputOTP value={value} onChangeText={onChange} maxLength={6}>
+            <TextInputOTPGroup>
+              <TextInputOTPSlot index={0} />
+              <TextInputOTPSlot index={1} />
+              <TextInputOTPSlot index={2} />
+            </TextInputOTPGroup>
+            <TextInputOTPSeparator />
+            <TextInputOTPGroup>
+              <TextInputOTPSlot index={3} />
+              <TextInputOTPSlot index={4} />
+              <TextInputOTPSlot index={5} />
+            </TextInputOTPGroup>
+          </TextInputOTP>
+        )}
+      />
+
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    </View>
+  );
+}
+```
+
+</details>
+
+<details>
+<summary>Usage of ref to programmatically set OTP value</summary>
+
+```tsx
+import { useRef } from 'react';
+import { Button, View } from 'react-native';
+import {
+  TextInputOTP,
+  TextInputOTPSlot,
+  TextInputOTPGroup,
+  TextInputOTPSeparator,
+} from 'react-native-input-code-otp';
+
+export function MyComponent() {
+  const inputRef = useRef<TextInputOTPRef>(null);
+
+  function onSomeAction() {
+    inputRef.current?.setValue('123456');
+  }
+
+  return (
+    <View>
+      <TextInputOTP ref={inputRef} maxLength={6}>
+        <TextInputOTPGroup>
+          <TextInputOTPSlot index={0} />
+          <TextInputOTPSlot index={1} />
+          <TextInputOTPSlot index={2} />
+        </TextInputOTPGroup>
+        <TextInputOTPSeparator />
+        <TextInputOTPGroup>
+          <TextInputOTPSlot index={3} />
+          <TextInputOTPSlot index={4} />
+          <TextInputOTPSlot index={5} />
+        </TextInputOTPGroup>
+      </TextInputOTP>
+
+      <Button title="Submit" onPress={onSomeAction} />
+    </View>
+  );
+}
+```
+
+</details>
 
 ## Contributing
 

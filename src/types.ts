@@ -20,6 +20,7 @@ export type TextInputOTPContextProps = {
   blur: () => void;
   clear: () => void;
   caretHidden: boolean;
+  caretColor?: string;
 };
 
 export type TextInputOTPProviderProps = PropsWithChildren<
@@ -31,6 +32,7 @@ export type TextInputOTPProviderProps = PropsWithChildren<
     | 'onFilled'
     | 'value'
     | 'caretHidden'
+    | 'caretColor'
   >
 >;
 
@@ -74,4 +76,5 @@ export type TextInputOTPProps = {
   maxLength: number;
   onFilled?: (text: string) => void;
   containerStyles?: StyleProp<ViewStyle>;
+  caretColor?: string;
 } & Omit<TextInputProps, 'style'>;

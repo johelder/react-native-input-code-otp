@@ -1,3 +1,9 @@
+import {
+  DEFAULT_DARK_COLOR,
+  DEFAULT_LIGHT_COLOR,
+  FOCUSED_SLOT_HEIGHT,
+  SLOT_HEIGHT,
+} from '../constants';
 import type { UseSlotBorderStylesProps } from '../types';
 
 export function useSlotBorderStyles({
@@ -6,8 +12,8 @@ export function useSlotBorderStyles({
   isLast,
 }: UseSlotBorderStylesProps) {
   return {
-    height: isFocused ? 54 : 50,
-    borderColor: isFocused ? '#030712' : '#E4E7EC',
+    height: isFocused ? FOCUSED_SLOT_HEIGHT : SLOT_HEIGHT,
+    borderColor: isFocused ? DEFAULT_DARK_COLOR : DEFAULT_LIGHT_COLOR,
     borderTopWidth: 2,
     borderBottomWidth: 2,
     borderLeftWidth: isFocused || isFirst ? 2 : 1,

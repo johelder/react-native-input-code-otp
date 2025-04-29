@@ -32,6 +32,7 @@ export function TextInputOTPProvider({
   onFilled,
   onChangeText,
   caretHidden = false,
+  caretColor,
   children,
 }: TextInputOTPProviderProps) {
   const [code, setCode] = useState(value);
@@ -98,6 +99,7 @@ export function TextInputOTPProvider({
       blur,
       clear,
       caretHidden,
+      caretColor,
     }),
     [
       clear,
@@ -108,6 +110,7 @@ export function TextInputOTPProvider({
       setValue,
       value,
       caretHidden,
+      caretColor,
     ]
   );
 

@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 import { StyleSheet, Animated, useAnimatedValue } from 'react-native';
+import { DEFAULT_DARK_COLOR } from '../constants';
+import { useTextInputOTP } from '../hooks/use-text-input-otp';
 
-export function AnimatedCaret() {
+export function Caret() {
   const opacity = useAnimatedValue(0);
+  const { caretColor } = useTextInputOTP();
 
   useEffect(() => {
     Animated.loop(
@@ -21,7 +24,14 @@ export function AnimatedCaret() {
     ).start();
   }, [opacity]);
 
-  return <Animated.View style={[styles.caret, { opacity }]} />;
+  return (
+    <Animated.View
+      style={[
+        styles.caret,
+        { opacity, backgroundColor: caretColor ?? DEFAULT_DARK_COLOR },
+      ]}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -29,6 +39,5 @@ const styles = StyleSheet.create({
     width: 2,
     height: 16,
     borderRadius: 16,
-    backgroundColor: '#030712',
   },
 });

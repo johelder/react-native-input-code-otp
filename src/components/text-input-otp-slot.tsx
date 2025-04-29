@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { AnimatedCaret } from './animated-caret';
+import { Caret } from './caret';
 import { useTextInputOTP } from '../hooks/use-text-input-otp';
 import { useSlotBorderStyles } from '../hooks/use-slot-border-styles';
 import { SLOT_HEIGHT, SLOT_WIDTH } from '../constants';
@@ -45,7 +45,7 @@ function TextInputOTPSlotComponent({
         </Text>
       )}
 
-      {shouldRenderCaret && <AnimatedCaret />}
+      {shouldRenderCaret && <Caret />}
     </Pressable>
   );
 }

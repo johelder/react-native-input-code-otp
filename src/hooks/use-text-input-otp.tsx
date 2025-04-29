@@ -5,10 +5,12 @@ import {
   useMemo,
   useRef,
   useState,
-  type PropsWithChildren,
 } from 'react';
 import type { TextInput } from 'react-native';
-import type { TextInputOTPContextProps, TextInputOTPProps } from '../types';
+import type {
+  TextInputOTPContextProps,
+  TextInputOTPProviderProps,
+} from '../types';
 
 const TextInputOTPContext = createContext<TextInputOTPContextProps>({
   code: '',
@@ -20,6 +22,7 @@ const TextInputOTPContext = createContext<TextInputOTPContextProps>({
   focus: () => {},
   blur: () => {},
   clear: () => {},
+  caretHidden: false,
 });
 
 export function TextInputOTPProvider({
@@ -28,13 +31,9 @@ export function TextInputOTPProvider({
   value = '',
   onFilled,
   onChangeText,
+  caretHidden = false,
   children,
-}: PropsWithChildren<
-  Pick<
-    TextInputOTPProps,
-    'autoFocus' | 'maxLength' | 'onFilled' | 'onChangeText' | 'value'
-  >
->) {
+}: TextInputOTPProviderProps) {
   const [code, setCode] = useState(value);
   const [currentIndex, setCurrentIndex] = useState(() => (autoFocus ? 0 : -1));
   const inputRef = useRef<TextInput>(null);
@@ -98,8 +97,18 @@ export function TextInputOTPProvider({
       focus,
       blur,
       clear,
+      caretHidden,
     }),
-    [clear, code, currentIndex, handleChangeText, handlePress, setValue, value]
+    [
+      clear,
+      code,
+      currentIndex,
+      handleChangeText,
+      handlePress,
+      setValue,
+      value,
+      caretHidden,
+    ]
   );
 
   return (

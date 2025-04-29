@@ -19,9 +19,10 @@ function TextInputOTPSlotComponent({
   slotTextStyles,
   ...rest
 }: TextInputOTPSlotProps & TextInputOTPSlotInternalProps) {
-  const { code, currentIndex, handlePress } = useTextInputOTP();
+  const { code, currentIndex, handlePress, caretHidden } = useTextInputOTP();
   const isFocused = currentIndex === index;
   const borderStyles = useSlotBorderStyles({ isFocused, isFirst, isLast });
+  const shouldRenderCaret = isFocused && !code[index] && !caretHidden;
 
   return (
     <Pressable
@@ -44,7 +45,7 @@ function TextInputOTPSlotComponent({
         </Text>
       )}
 
-      {isFocused && !code[index] && <AnimatedCaret />}
+      {shouldRenderCaret && <AnimatedCaret />}
     </Pressable>
   );
 }

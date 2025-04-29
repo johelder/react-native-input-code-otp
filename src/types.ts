@@ -1,4 +1,4 @@
-import type { ReactNode, RefObject } from 'react';
+import type { PropsWithChildren, ReactNode, RefObject } from 'react';
 import type {
   PressableProps,
   StyleProp,
@@ -19,7 +19,20 @@ export type TextInputOTPContextProps = {
   focus: () => void;
   blur: () => void;
   clear: () => void;
+  caretHidden: boolean;
 };
+
+export type TextInputOTPProviderProps = PropsWithChildren<
+  Pick<
+    TextInputOTPProps,
+    | 'autoFocus'
+    | 'maxLength'
+    | 'onChangeText'
+    | 'onFilled'
+    | 'value'
+    | 'caretHidden'
+  >
+>;
 
 export type TextInputOTPGroupProps = {
   groupStyles?: StyleProp<ViewStyle>;

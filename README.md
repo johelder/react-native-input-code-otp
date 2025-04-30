@@ -45,6 +45,7 @@ export function MyComponent() {
 | ------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `maxLength`  | number - Required                 | The max number of digits to OTP code.                                                                                          |
 | `onFilled`   | (code: string) => void - Optional | The callback function is executed when the OTP input has been entirely completed, and it receives the OTP code as a parameter. |
+| `caretColor` | string - Optional                 | The color of the blinking caret shown in the focused input slot. Accepts any valid color string (e.g., hex, rgb, color names). |
 
 ---
 
@@ -76,7 +77,7 @@ The `TextInputOTP` component exposes these functions with `ref`:
 | ---------- | ----------------------- | -------------------------------------------------------------------------- |
 | `clear`    | () => void              | Resets the OTP input by clearing all entered values.                       |
 | `focus`    | () => void              | Activates the OTP input field, allowing the user to type.                  |
-| `blue`     | () => void              | Deactivates the OTP input field, removing focus.                           |
+| `blur`     | () => void              | Deactivates the OTP input field, removing focus.                           |
 | `setValue` | (value: string) => void | Sets a custom value to the OTP input fields, overriding any current input. |
 
 ## Examples

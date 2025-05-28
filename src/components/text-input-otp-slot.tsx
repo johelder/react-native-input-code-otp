@@ -3,7 +3,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 import { Caret } from './caret';
 import { useTextInputOTP } from '../hooks/use-text-input-otp';
 import { useSlotBorderStyles } from '../hooks/use-slot-border-styles';
-import { SLOT_HEIGHT, SLOT_WIDTH } from '../constants';
+import { DEFAULT_DARK_COLOR, SLOT_HEIGHT, SLOT_WIDTH } from '../constants';
 import type {
   TextInputOTPSlotInternalProps,
   TextInputOTPSlotProps,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slotText: {
-    color: '#030712',
+    color: DEFAULT_DARK_COLOR,
     fontSize: 14,
     fontWeight: 'bold',
   },

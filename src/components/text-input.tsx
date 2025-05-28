@@ -19,6 +19,7 @@ export const TextInput = forwardRef<
 
   return (
     <RNTextInput
+      testID="hidden-text-input"
       ref={inputRef}
       keyboardType="number-pad"
       autoFocus={autoFocus}

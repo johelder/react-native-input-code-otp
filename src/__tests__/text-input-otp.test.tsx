@@ -25,7 +25,11 @@ describe('TextInputOTP Component', () => {
     const mockedOnFilled = jest.fn();
     const view = render({ onFilled: mockedOnFilled });
     fireEvent.changeText(view.getByTestId('hidden-text-input'), CODE);
-
     expect(mockedOnFilled).toHaveBeenCalledWith(CODE);
+  });
+
+  it('should not render the animated caret when caretHidden prop is true', () => {
+    const view = render({ caretHidden: true });
+    expect(view.queryByTestId('caret')).toBeNull();
   });
 });

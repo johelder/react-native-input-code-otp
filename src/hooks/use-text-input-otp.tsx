@@ -70,6 +70,7 @@ export function TextInputOTPProvider({
         text.length > maxLength ? text.slice(0, maxLength) : text;
       setCode(filledCode);
       setCurrentIndex(maxLength - 1);
+      onFilled?.(filledCode);
     },
     [maxLength]
   );

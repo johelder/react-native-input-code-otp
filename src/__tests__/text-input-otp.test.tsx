@@ -1,9 +1,13 @@
-import { fireEvent, render as TLRender } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { TextInputOTP, TextInputOTPSlot } from '../components';
-import type { TextInputOTPProps } from '../types';
+import type { TextInputOTPProps, TextInputOTPRef } from '../types';
+import { createRef } from 'react';
 
-function render({ maxLength = 6, ...rest }: Partial<TextInputOTPProps>) {
-  return TLRender(
+function renderTextInputOTP({
+  maxLength = 6,
+  ...rest
+}: Partial<TextInputOTPProps>) {
+  return render(
     <TextInputOTP maxLength={maxLength} {...rest}>
       <TextInputOTPSlot index={0} />
       <TextInputOTPSlot index={1} />
@@ -23,20 +27,40 @@ describe('TextInputOTP Component', () => {
   it('should call onFilled with the complete code when all digits are filled', () => {
     const CODE = '123456';
     const mockedOnFilled = jest.fn();
-    const view = render({ onFilled: mockedOnFilled });
+    const view = renderTextInputOTP({ onFilled: mockedOnFilled });
     fireEvent.changeText(view.getByTestId('hidden-text-input'), CODE);
     expect(mockedOnFilled).toHaveBeenCalledWith(CODE);
   });
 
   it('should not render the animated caret when the caretHidden prop is true', () => {
-    const view = render({ caretHidden: true });
+    const view = renderTextInputOTP({ caretHidden: true });
     expect(view.queryByTestId('caret')).toBeNull();
   });
 
   it('should render the slots only up to the number defined by the maxLength prop', () => {
     const MAX_LENGTH = 6;
-    const view = render({ maxLength: MAX_LENGTH, caretHidden: true });
+    const view = renderTextInputOTP({
+      maxLength: MAX_LENGTH,
+      caretHidden: true,
+    });
     const slots = view.getAllByTestId('text-input-otp-slot');
     expect(slots).toHaveLength(MAX_LENGTH);
+  });
+
+  it('should call onFilled with the complete code when setValue is called programmatically', () => {
+    const CODE = '123';
+    const mockedOnFilled = jest.fn();
+    const ref = createRef<TextInputOTPRef>();
+    render(
+      <TextInputOTP ref={ref} maxLength={3} onFilled={mockedOnFilled}>
+        <TextInputOTPSlot index={0} />
+        <TextInputOTPSlot index={1} />
+        <TextInputOTPSlot index={2} />
+      </TextInputOTP>
+    );
+
+    act(() => ref.current?.setValue(CODE));
+
+    expect(mockedOnFilled).toHaveBeenCalledWith(CODE);
   });
 });

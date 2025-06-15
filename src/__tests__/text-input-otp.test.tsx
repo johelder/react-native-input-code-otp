@@ -58,9 +58,22 @@ describe('TextInputOTP Component', () => {
         <TextInputOTPSlot index={2} />
       </TextInputOTP>
     );
-
     act(() => ref.current?.setValue(CODE));
-
     expect(mockedOnFilled).toHaveBeenCalledWith(CODE);
+  });
+
+  it('should call clear the input text when clear function is called programmatically', () => {
+    const CODE = '1';
+    const ref = createRef<TextInputOTPRef>();
+    const view = render(
+      <TextInputOTP ref={ref} maxLength={3}>
+        <TextInputOTPSlot index={0} />
+        <TextInputOTPSlot index={1} />
+        <TextInputOTPSlot index={2} />
+      </TextInputOTP>
+    );
+    fireEvent.changeText(view.getByTestId('hidden-text-input'), CODE);
+    act(() => ref.current?.clear());
+    expect(view.queryByText(CODE)).toBeFalsy();
   });
 });

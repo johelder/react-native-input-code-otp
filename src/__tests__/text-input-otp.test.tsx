@@ -33,7 +33,7 @@ describe('TextInputOTP Component', () => {
     expect(view.queryByTestId('caret')).toBeNull();
   });
 
-  it('should render the slots only up to the number defined by the maxLength prop', async () => {
+  it('should render the slots only up to the number defined by the maxLength prop', () => {
     const MAX_LENGTH = 6;
     const view = render({ maxLength: MAX_LENGTH, caretHidden: true });
     const slots = view.getAllByTestId('text-input-otp-slot');

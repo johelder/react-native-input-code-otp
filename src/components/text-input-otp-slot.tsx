@@ -26,6 +26,7 @@ function TextInputOTPSlotComponent({
 
   return (
     <Pressable
+      testID="text-input-otp-slot"
       onPress={handlePress}
       style={StyleSheet.flatten([
         styles.slot,

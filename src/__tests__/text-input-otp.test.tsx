@@ -2,9 +2,9 @@ import { fireEvent, render as TLRender } from '@testing-library/react-native';
 import { TextInputOTP, TextInputOTPSlot } from '../components';
 import type { TextInputOTPProps } from '../types';
 
-function render(props?: Partial<TextInputOTPProps>) {
+function render({ maxLength = 6, ...rest }: Partial<TextInputOTPProps>) {
   return TLRender(
-    <TextInputOTP maxLength={6} {...props}>
+    <TextInputOTP maxLength={maxLength} {...rest}>
       <TextInputOTPSlot index={0} />
       <TextInputOTPSlot index={1} />
       <TextInputOTPSlot index={2} />
@@ -28,8 +28,15 @@ describe('TextInputOTP Component', () => {
     expect(mockedOnFilled).toHaveBeenCalledWith(CODE);
   });
 
-  it('should not render the animated caret when caretHidden prop is true', () => {
+  it('should not render the animated caret when the caretHidden prop is true', () => {
     const view = render({ caretHidden: true });
     expect(view.queryByTestId('caret')).toBeNull();
+  });
+
+  it('should render the slots only up to the number defined by the maxLength prop', async () => {
+    const MAX_LENGTH = 6;
+    const view = render({ maxLength: MAX_LENGTH, caretHidden: true });
+    const slots = view.getAllByTestId('text-input-otp-slot');
+    expect(slots).toHaveLength(MAX_LENGTH);
   });
 });

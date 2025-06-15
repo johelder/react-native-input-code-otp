@@ -16,7 +16,14 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    extends: fixupConfigRules(compat.extends('@react-native', 'prettier')),
+    files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    extends: fixupConfigRules(
+      compat.extends(
+        '@react-native',
+        'prettier',
+        'plugin:testing-library/react'
+      )
+    ),
     plugins: { prettier },
     rules: {
       'react/react-in-jsx-scope': 'off',
@@ -30,12 +37,10 @@ export default defineConfig([
           useTabs: false,
         },
       ],
+      'testing-library/prefer-screen-queries': 'off',
     },
   },
   {
-    ignores: [
-      'node_modules/',
-      'lib/'
-    ],
+    ignores: ['node_modules/', 'lib/'],
   },
 ]);

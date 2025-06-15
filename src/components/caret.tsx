@@ -26,6 +26,7 @@ export function Caret() {
 
   return (
     <Animated.View
+      testID="caret"
       style={[
         styles.caret,
         { opacity, backgroundColor: caretColor ?? DEFAULT_DARK_COLOR },

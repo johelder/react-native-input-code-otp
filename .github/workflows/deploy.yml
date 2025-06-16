@@ -1,0 +1,40 @@
+name: DEPLOY
+on:
+  push:
+    branches:
+      - main
+  merge_group:
+    types:
+      - checks_requested
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Initialize Git user
+        run: |
+          git config --global user.name "Release Workflow"
+          git config --global user.email "${{ secrets.GIT_EMAIL }}"
+
+      - name: Authenticate GitHub Actions
+        run: git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Initialize the NPM config
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Deploy package to NPM
+        run: yarn release --ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

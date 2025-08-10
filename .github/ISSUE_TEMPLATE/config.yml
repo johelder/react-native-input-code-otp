@@ -1,5 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-config.json
 blank_issues_enabled: false
 contact_links:
+  - name: Bug report 🐛
+    url: https://github.com/johelder/react-native-input-code-otp/issues/new?template=bug_report.yml
+    about: Report a reproducible bug or regression in this library.
   - name: Feature Request 💡
     url: https://github.com/johelder/react-native-input-code-otp/discussions/new?category=ideas
     about: If you have a feature request, please create a new discussion on GitHub.

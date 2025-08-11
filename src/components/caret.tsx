@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { StyleSheet, Animated, useAnimatedValue } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { StyleSheet, Animated } from 'react-native';
 import { DEFAULT_DARK_COLOR } from '../constants';
 import { useTextInputOTP } from '../hooks/use-text-input-otp';
 
 export function Caret() {
-  const opacity = useAnimatedValue(0);
+  const opacity = useRef(new Animated.Value(0)).current;
   const { caretColor } = useTextInputOTP();
 
   useEffect(() => {

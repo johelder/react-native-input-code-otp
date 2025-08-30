@@ -1,13 +1,15 @@
 import { memo } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { Caret } from './caret';
 import { useTextInputOTP } from '../hooks/use-text-input-otp';
 import { useSlotBorderStyles } from '../hooks/use-slot-border-styles';
-import { DEFAULT_DARK_COLOR, SLOT_HEIGHT, SLOT_WIDTH } from '../constants';
+import { useThemeColor } from '../hooks/use-theme-color';
+import { SLOT_HEIGHT, SLOT_WIDTH } from '../constants';
 import type {
   TextInputOTPSlotInternalProps,
   TextInputOTPSlotProps,
 } from '../types';
+import { theme } from '../theme';
+import { Caret } from './caret';
 
 function TextInputOTPSlotComponent({
   index,
@@ -22,6 +24,11 @@ function TextInputOTPSlotComponent({
   const { code, currentIndex, handlePress, caretHidden } = useTextInputOTP();
   const isFocused = currentIndex === index;
   const borderStyles = useSlotBorderStyles({ isFocused, isFirst, isLast });
+  const defaultTextColor = useThemeColor({
+    light: theme.colorBlack,
+    dark: theme.colorWhite,
+  });
+
   const shouldRenderCaret = isFocused && !code[index] && !caretHidden;
 
   return (
@@ -39,6 +46,7 @@ function TextInputOTPSlotComponent({
         <Text
           style={StyleSheet.flatten([
             styles.slotText,
+            { color: defaultTextColor },
             isFocused ? focusedSlotTextStyles : slotTextStyles,
           ])}
         >
@@ -61,8 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slotText: {
-    color: DEFAULT_DARK_COLOR,
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: theme.fontSize14,
+    fontWeight: theme.fontWeightBold,
   },
 });

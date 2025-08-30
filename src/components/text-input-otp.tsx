@@ -1,8 +1,9 @@
+import { forwardRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInputOTPProvider } from '../hooks/use-text-input-otp';
-import { TextInput } from './text-input';
-import { forwardRef } from 'react';
 import type { TextInputOTPProps, TextInputOTPRef } from '../types';
+import { theme } from '../theme';
+import { TextInput } from './text-input';
 
 export const TextInputOTP = forwardRef<TextInputOTPRef, TextInputOTPProps>(
   ({ children, containerStyles, ...rest }, ref) => {
@@ -22,6 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: theme.space10,
   },
 });

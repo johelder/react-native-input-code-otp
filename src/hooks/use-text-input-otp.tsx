@@ -50,6 +50,8 @@ export function TextInputOTPProvider({
 
       if (text.length === maxLength) {
         onFilled?.(text);
+        setCurrentIndex(text.length - 1);
+        return;
       }
 
       if (text.length < maxLength) {

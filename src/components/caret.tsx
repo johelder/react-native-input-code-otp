@@ -19,7 +19,7 @@ export function Caret() {
         Animated.timing(opacity, {
           toValue: 0,
           duration: 500,
-          useNativeDriver: false,
+          useNativeDriver,
         }),
         Animated.timing(opacity, {
           toValue: 1,

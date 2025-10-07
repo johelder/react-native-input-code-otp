@@ -8,7 +8,7 @@ react-native-input-code-otp is a high-performance and fully customizable OTP inp
 
 Try it on Snack Expo:
 
-[![Snack Expo App](https://img.shields.io/badge/Snack-fff.svg?style=for-the-badge&logo=EXPO&labelColor=000&logoColor=FFF)](https://snack.expo.dev/@anday013/demo-react-native-otp-entry)
+[![Snack Expo App](https://img.shields.io/badge/Snack-fff.svg?style=for-the-badge&logo=EXPO&labelColor=000&logoColor=FFF)](https://snack.expo.dev/@johelder/demo-react-native-input-code-otp)
 
 ## Installation
 
